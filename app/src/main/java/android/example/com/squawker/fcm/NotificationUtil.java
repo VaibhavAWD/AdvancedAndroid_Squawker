@@ -37,11 +37,13 @@ public class NotificationUtil {
             currentNotificationId = 1;
         } else {
             currentNotificationId += 1;
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.apply();
-            editor.putInt(NOTIFICATION_ID, currentNotificationId);
-            editor.commit();
         }
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.apply();
+        editor.putInt(NOTIFICATION_ID, currentNotificationId);
+        editor.commit();
+
         return currentNotificationId;
     }
 
