@@ -35,6 +35,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -56,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements
     static final int COL_NUM_MESSAGE = 1;
     static final int COL_NUM_DATE = 2;
     static final int COL_NUM_AUTHOR_KEY = 3;
+
+    private String mToken;
 
 
     @Override
@@ -90,6 +96,20 @@ public class MainActivity extends AppCompatActivity implements
         if (extras != null && extras.containsKey("test")) {
             Log.d(LOG_TAG, extras.getString("test"));
         }
+
+        String token = getToken();
+        Log.d(LOG_TAG, "Refreshed Token: " + token);
+    }
+
+    private String getToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        mToken = instanceIdResult.getToken();
+                    }
+                });
+        return mToken;
     }
 
     @Override
