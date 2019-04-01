@@ -23,6 +23,7 @@ import android.example.com.squawker.provider.SquawkContract;
 import android.example.com.squawker.provider.SquawkProvider;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -101,15 +102,10 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(LOG_TAG, "Refreshed Token: " + token);
     }
 
-    private String getToken() {
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
-                    @Override
-                    public void onSuccess(InstanceIdResult instanceIdResult) {
-                        mToken = instanceIdResult.getToken();
-                    }
-                });
-        return mToken;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cancelAllNotifications();
     }
 
     @Override
@@ -154,5 +150,21 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    private String getToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        mToken = instanceIdResult.getToken();
+                    }
+                });
+        return mToken;
+    }
+
+    private void cancelAllNotifications() {
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+        managerCompat.cancelAll();
     }
 }
