@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -35,4 +36,7 @@ dependencies {
 
     // Preferences Dependencies
     implementation 'com.android.support:preference-v7:28.0.0'
+
+    // Firebase Cloud Messaging
+    implementation 'com.google.firebase:firebase-messaging:17.5.0'
 }
